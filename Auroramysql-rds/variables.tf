@@ -1,61 +1,46 @@
+
 # variable "region" {
-#   type = string
-#   default  = "us-east-1"
+#   type    = string
+#   default = "us-east-1"
 # }
 # variable "vpc-cidr" {
-#     default = "10.0.0.0/16"
-#     description = "vpc cidr block"
-#     type = string
+#   default     = "10.0.0.0/16"
+#   description = "vpc cidr block"
+#   type        = string
+# }
+# variable "count" {
+#   default     = "3"
+#   description = "create 3 read replicas"
+#   type        = number
 # }
 
 # variable "public-subnet-1-cidr" {
-#     default = "10.0.0.0/24"
-#     description = "public subnet 1"
-#     type = string
+#   default     = "10.0.0.0/24"
+#   description = "public subnet 1"
+#   type        = string
 # }
 
 # variable "public-subnet-2-cidr" {
-#     default = "10.0.1.0/24"
-#     description = "public subnet 2"
-#     type = string
+#   default     = "10.0.1.0/24"
+#   description = "public subnet 2"
+#   type        = string
 # }
 # variable "db_instance_count" {
 #   default = 2
 # }
-# # variable "replica_count" {
-#   description = "Number of reader nodes to create.  If `replica_scale_enable` is `true`, the value of `replica_scale_min` is used instead."
-#   default     = "3"
-# }
+
 # variable "private-subnet-3-cidr" {
-#     default = "10.0.3.0/24"
-#     description = "private subnet 3"
-#     type = string
+#   default     = "10.0.3.0/24"
+#   description = "private subnet 3"
+#   type        = string
 # }
 
 # variable "private-subnet-4-cidr" {
-#     default = "10.0.4.0/24"
-#     description = "private subnet 4"
-#     type = string
+#   default     = "10.0.4.0/24"
+#   description = "private subnet 4"
+#   type        = string
 # }
-variable "replica_enabled" {
-  description = "whether to enable autoscaling for Rds Aurora read replicas"
-  type        = string
-  default     = false
-}
-variable "replica_count" {
-  description = "If replica_enabled is true, it will create read replica, or else it will create writer instance"
-  type        = string
-  default     = "1"
-}
-variable "engine_mode" {
-  description = "The DB engine_mode. Valid values are, provisioned, serverless"
-  type        = string
-  default     = "provisioned"
-  validation {
-    condition     = contains(["provisioned"], var.engine_mode)
-    error_message = "engine_mode should be 'provisioned' only"
-  }
-}
+
 
 variable "skip_final_snapshot" {
   description = "If true no snapshot is created"
@@ -67,12 +52,30 @@ variable "cluster_identifier" {
   type        = string
   default     = "example-cluster"
 }
+variable "replica_enabled" {
+  description = "whether to enable autoscaling for Rds Aurora read replicas"
+  type        = string
+  default     = false
+}
+variable "replica_count" {
+  description = "If replica_enabled is true, it will create read replica, or else it will create writer instance"
+  type        = string
+  default     = "1"
+}
 variable "engine" {
   description = "The name of the engine to be used for the DB cluster"
   type        = string
   default     = "aurora-mysql"
 }
-
+variable "engine_mode" {
+  description = "The DB engine_mode. Valid values are, provisioned, serverless"
+  type        = string
+  default     = "provisioned"
+  validation {
+    condition     = contains(["provisioned"], var.engine_mode)
+    error_message = "engine_mode should be 'provisioned' only"
+  }
+}
 variable "engine_version" {
   description = "DB engine version"
   type        = string

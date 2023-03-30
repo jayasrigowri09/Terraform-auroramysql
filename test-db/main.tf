@@ -1,8 +1,5 @@
-provider "aws" {
-    region  = "us-east-1"
-    version = "~> 4.59.0"
-}
 
+//create RDS Aurora Cluster
 resource "aws_rds_cluster" "example_cluster" {
     engine = var.engine
     engine_mode = var.engine_mode
@@ -19,22 +16,6 @@ resource "aws_rds_cluster" "example_cluster" {
     vpc_security_group_ids = [aws_security_group.database_security_group.id]
     
  }
-resource "aws_db_parameter_group" "db_parameter_group" {
-    name = "aurora-mysql-parameter-group"
-    description = "Custom parameter group for MYSQL-Aurora"
-    family = "aurora-mysql5.7"
-    parameter {
-        name = "connect_timeout"
-        value = "4"
-    }
-    parameter {
-        name = "autocommit"
-        value = "1"
-    }
-    tags = {
-        Name = "example-db-parameter-group"
-    }
-}
 
 resource "aws_rds_cluster_instance" "example" {
     identifier = "${var.rds_cluster_identifier}-example-instance"
@@ -59,10 +40,27 @@ resource "aws_rds_cluster_instance" "reader" {
     engine_version = aws_rds_cluster.example_cluster.engine_version
     db_parameter_group_name = aws_db_parameter_group.db_parameter_group.name
     db_subnet_group_name = aws_db_subnet_group.db_subnet_group.name
-    #instance_role = "reader"
+    
     tags = {
         Name = "demo-mysql-aurora.$${count.index + 1}"
     }
+    resource "aws_db_parameter_group" "db_parameter_group" {
+    name = "aurora-mysql-parameter-group"
+    description = "Custom parameter group for MYSQL-Aurora"
+    family = "aurora-mysql5.7"
+    parameter {
+        name = "connect_timeout"
+        value = "4"
+    }
+    parameter {
+        name = "autocommit"
+        value = "1"
+    }
+    tags = {
+        Name = "example-db-parameter-group"
+    }
+}
+
 }
 resource "aws_db_subnet_group" "db_subnet_group" { 
     name = "subet-datab"
