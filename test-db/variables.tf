@@ -22,6 +22,11 @@ variable "private-subnet-3-cidr" {
     type = string
 }
 
+variable "read_replica" {
+    default = true
+    type = bool
+}
+
 variable "private-subnet-4-cidr" {
     default = "10.0.4.0/24"
     description = "private subnet 4"

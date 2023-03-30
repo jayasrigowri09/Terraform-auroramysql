@@ -50,7 +50,8 @@ resource "aws_rds_cluster_instance" "example" {
     }
 }
 resource "aws_rds_cluster_instance" "reader" {
-    identifier = "${var.rds_cluster_identifier}-example-reader"
+    count = var.read_replica ? 3 : 1
+    identifier = example-reader-${count.index+1}"                                                                  // "${var.rds_cluster_identifier}-
     cluster_identifier = join("", aws_rds_cluster.example_cluster.*.id)
     instance_class = var.instance_class
     publicly_accessible = var.publicly_accessible
@@ -60,7 +61,7 @@ resource "aws_rds_cluster_instance" "reader" {
     db_subnet_group_name = aws_db_subnet_group.db_subnet_group.name
     #instance_role = "reader"
     tags = {
-        Name = "demo-mysql-aurora"
+        Name = "demo-mysql-aurora.$${count.index + 1}"
     }
 }
 resource "aws_db_subnet_group" "db_subnet_group" { 
